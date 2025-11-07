@@ -1,0 +1,33 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.a
+*.gcno
+*.gcov
+
+# Test binaries
+*_test
+
+# Output of the go build command
+# for packages that don't have a main function
+*.out
+
+# Dependency caches
+# Go module cache (Go 1.11+)
+/pkg/mod/
+
+# Build cache
+/pkg/
+
+# Editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
