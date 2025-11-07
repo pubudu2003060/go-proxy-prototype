@@ -8,7 +8,7 @@ import (
 	"github.com/pubudu2003060/go-proxy-prototype/captain/storage"
 )
 
-func getConfig(storage *storage.MemoryStorage) gin.HandlerFunc {
+func GetConfig(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		pools, err := storage.GetAllPools()
 		if err != nil {
@@ -20,7 +20,7 @@ func getConfig(storage *storage.MemoryStorage) gin.HandlerFunc {
 	}
 }
 
-func authenticateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
+func AuthenticateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req models.AuthRequest
 		if err := c.ShouldBindJSON(&req); err != nil {
@@ -64,7 +64,7 @@ func authenticateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 	}
 }
 
-func reportUsage(storage *storage.MemoryStorage) gin.HandlerFunc {
+func ReportUsage(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req models.UsageReport
 		if err := c.ShouldBindJSON(&req); err != nil {

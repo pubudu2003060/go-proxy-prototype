@@ -8,7 +8,7 @@ import (
 	"github.com/pubudu2003060/go-proxy-prototype/captain/storage"
 )
 
-func createPool(storage *storage.MemoryStorage) gin.HandlerFunc {
+func CreatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req models.CreatePoolRequest
 		if err := c.ShouldBindJSON(&req); err != nil {
@@ -36,7 +36,7 @@ func createPool(storage *storage.MemoryStorage) gin.HandlerFunc {
 	}
 }
 
-func listPools(storage *storage.MemoryStorage) gin.HandlerFunc {
+func ListPools(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		pools, err := storage.ListPools()
 		if err != nil {
@@ -48,7 +48,7 @@ func listPools(storage *storage.MemoryStorage) gin.HandlerFunc {
 	}
 }
 
-func getPool(storage *storage.MemoryStorage) gin.HandlerFunc {
+func GetPool(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		name := c.Param("name")
 		
@@ -62,7 +62,7 @@ func getPool(storage *storage.MemoryStorage) gin.HandlerFunc {
 	}
 }
 
-func updatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
+func UpdatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		name := c.Param("name")
 		var pool models.Pool
@@ -82,7 +82,7 @@ func updatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 	}
 }
 
-func deletePool(storage *storage.MemoryStorage) gin.HandlerFunc {
+func DeletePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		name := c.Param("name")
 		

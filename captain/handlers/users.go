@@ -10,7 +10,7 @@ import (
 	"github.com/pubudu2003060/go-proxy-prototype/captain/storage"
 )
 
-func createUser(storage *storage.MemoryStorage) gin.HandlerFunc {
+func CreateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context){
 		var req models.CreateUserRequest
 		if err := c.ShouldBindJSON(&req);err != nil {
@@ -41,7 +41,7 @@ func createUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 	}
 }
 
-func listUsers (storage *storage.MemoryStorage) gin.HandlerFunc{
+func ListUsers (storage *storage.MemoryStorage) gin.HandlerFunc{
 	return func(c *gin.Context){
 		users,err := storage.ListUsers()
 		if err != nil {
@@ -57,7 +57,7 @@ func listUsers (storage *storage.MemoryStorage) gin.HandlerFunc{
 	}
 }
 
-func getUser (storage *storage.MemoryStorage) gin.HandlerFunc {
+func GetUser (storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context){
 		id := c.Param("id")
 
@@ -72,7 +72,7 @@ func getUser (storage *storage.MemoryStorage) gin.HandlerFunc {
 	}
 }
 
-func updateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
+func UpdateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context){
 		id := c.Param("id")
 		var req models.UpdateUserRequest
@@ -111,7 +111,7 @@ func updateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 	}
 }
 
-func deleteUser(storage *storage.MemoryStorage) gin.HandlerFunc {
+func DeleteUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")
 		if err := storage.DeleteUser(id); err != nil {
