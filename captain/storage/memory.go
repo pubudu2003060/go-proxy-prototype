@@ -54,10 +54,10 @@ func (s *MemoryStorage) GetUserByUsername(username string)(*models.User,error){
 		}
 	}
 
-	return nil,fmt.Errorf("User not found")
+	return nil,fmt.Errorf("user not found")
 }
 
-func (s *MemoryStorage)  ListUser()([]*models.User,error){
+func (s *MemoryStorage)  ListUsers()([]*models.User,error){
 	s.mu.RLock()
 	defer s.mu.Unlock()
 
@@ -75,7 +75,7 @@ func (s *MemoryStorage) UpdateUser (id string,updateFun func(*models.User) error
 
 	user,ok := s.users[id]
 	if !ok {
-		return fmt.Errorf("User not found")
+		return fmt.Errorf("user not found")
 	}
 
 	if err := updateFun(user);err != nil {
