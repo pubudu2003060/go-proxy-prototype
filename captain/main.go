@@ -13,6 +13,7 @@ import (
 func main() {
 
 	storage := storage.NewMemoryStorage()
+	
 	initSampleData(storage)
 
 	r := gin.Default()

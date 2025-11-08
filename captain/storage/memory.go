@@ -28,13 +28,14 @@ func (s *MemoryStorage) CreateUser(user *models.User) error {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 	s.users[user.Id] = user
+	fmt.Printf("user created \n",s.users[user.Id])
 
 	return nil
 }
 
 func (s *MemoryStorage) GetUser(id string) (*models.User,error) {
 	s.mu.RLock()
-	defer s.mu.Unlock()
+	defer s.mu.RUnlock()
 
 	user,ok := s.users[id]
 	if !ok {
@@ -59,13 +60,13 @@ func (s *MemoryStorage) GetUserByUsername(username string)(*models.User,error){
 
 func (s *MemoryStorage)  ListUsers()([]*models.User,error){
 	s.mu.RLock()
-	defer s.mu.Unlock()
-
+	defer s.mu.RUnlock()
+    
 	users := make([]*models.User,len(s.users))
 	for _,user := range s.users {
 		users = append(users, user)
 	}
-
+	
 	return users,nil
 }
 

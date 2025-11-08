@@ -36,7 +36,6 @@ func CreateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 			return 
 		}
 
-		user.Password = ""
 		c.JSON(http.StatusCreated,user)
 	}
 }
@@ -47,10 +46,6 @@ func ListUsers (storage *storage.MemoryStorage) gin.HandlerFunc{
 		if err != nil {
 			c.JSON(http.StatusInternalServerError,gin.H{"error":err.Error()})
 			return 
-		}
-
-		for _,user := range users {
-			user.Password = ""
 		}
 
 		c.JSON(http.StatusOK,users)
