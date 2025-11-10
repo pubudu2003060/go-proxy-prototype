@@ -34,7 +34,7 @@ func (s *MemoryStorage) CreateUser(user *models.User) error {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 	s.users[user.Id] = user
-	fmt.Printf("user created \n",s.users[user.Id])
+	fmt.Printf("user created %v \n",s.users[user.Id])
 
 	return nil
 }
