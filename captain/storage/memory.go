@@ -97,6 +97,11 @@ func (s *MemoryStorage) DeleteUser (id string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
+	user := s.users[id]
+	if user == nil {
+		return fmt.Errorf("user not found")
+	}
+	
 	delete(s.users,id)
 	return nil
 } 
