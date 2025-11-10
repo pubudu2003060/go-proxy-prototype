@@ -29,3 +29,13 @@ type CreatePoolRequest struct {
 	PortEnd   int    `json:"port_end" binding:"required"`
 	Outs      []Out  `json:"outs" binding:"required"`
 }
+
+type UpdatePoolRequest struct {
+	Continent *string `json:"continent,omitempty" `
+	Tag       *string `json:"tag,omitempty"`
+	Subdomain *string `json:"subdomain,omitempty"`
+	CC3       *string `json:"cc3,omitempty"`
+	PortStart *int    `json:"port_start,omitempty"`
+	PortEnd   *int    `json:"port_end,omitempty"`
+	Outs      *[]Out  `json:"outs,omitempty"`
+}

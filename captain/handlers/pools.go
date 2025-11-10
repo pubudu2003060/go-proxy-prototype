@@ -65,20 +65,41 @@ func GetPool(storage *storage.MemoryStorage) gin.HandlerFunc {
 func UpdatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		name := c.Param("name")
-		var pool models.Pool
-		if err := c.ShouldBindJSON(&pool); err != nil {
+		var req models.UpdatePoolRequest
+		if err := c.ShouldBindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 		
-		pool.Name = name // Ensure name consistency
-		
-		if err := storage.UpdatePool(name, &pool); err != nil {
+		if err := storage.UpdatePool(name,func(pool *models.Pool) error {
+			if req.Continent != nil {
+				pool.Continent = *req.Continent
+			}
+			if req.CC3 != nil {
+				pool.CC3 = *req.CC3
+			}
+			if req.Outs != nil {
+				pool.Outs = *req.Outs
+			}
+			if req.PortEnd != nil {
+				pool.PortEnd = *req.PortEnd
+			}
+			if req.PortStart != nil {
+				pool.PortStart = *req.PortStart
+			}
+			if req.Subdomain != nil {
+				pool.Subdomain = *req.Subdomain
+			}
+			if req.Tag != nil {
+				pool.Tag = *req.Tag
+			}
+			return  nil
+		}); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
 		
-		c.JSON(http.StatusOK, pool)
+		c.JSON(http.StatusNoContent, struct{}{})
 	}
 }
 

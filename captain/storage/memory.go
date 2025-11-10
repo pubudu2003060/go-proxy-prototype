@@ -109,6 +109,21 @@ func (s *MemoryStorage) DeleteUser (id string) error {
 func (s *MemoryStorage) CreatePool(pool *models.Pool) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
+	if _,ok := s.pools[pool.Name]; ok {
+		return fmt.Errorf("pool with %s already exit",pool.Name)
+	}
+	for _,v := range s.pools {
+		if v.Subdomain == pool.Subdomain {
+			return fmt.Errorf("pool with %s already exit",pool.Subdomain)
+		}
+		if v.PortEnd == pool.PortEnd {
+			return fmt.Errorf("pool with %d already exit",pool.PortEnd)
+		}
+		if v.PortStart == pool.PortStart {
+			return fmt.Errorf("pool with %d already exit",pool.PortStart)
+		}
+	}
 	
 	s.pools[pool.Name] = pool
 	return nil
@@ -138,21 +153,29 @@ func (s *MemoryStorage) ListPools() ([]*models.Pool, error) {
 	return pools, nil
 }
 
-func (s *MemoryStorage) UpdatePool(name string, pool *models.Pool) error {
+func (s *MemoryStorage) UpdatePool(name string, updateFunc func(model *models.Pool) error) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	
-	if _, exists := s.pools[name]; !exists {
+	pool, exists := s.pools[name]
+	if !exists {
 		return fmt.Errorf("pool not found")
 	}
 	
-	s.pools[name] = pool
+	if err := updateFunc(pool); err != nil {
+		return  fmt.Errorf("error in user request")
+	}
+
 	return nil
 }
 
 func (s *MemoryStorage) DeletePool(name string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
+	if _,ok := s.pools[name]; !ok {
+		return fmt.Errorf("pool not found")
+	}
 	
 	delete(s.pools, name)
 	return nil
