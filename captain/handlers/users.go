@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -32,6 +33,10 @@ func CreateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 		}
 
 		if err := storage.CreateUser(user);err != nil {
+			if strings.Contains(err.Error(),"already Exit") {
+				c.JSON(http.StatusConflict,gin.H{"error":err.Error()})
+				return
+			}
 			c.JSON(http.StatusInternalServerError,gin.H{"error":err.Error()})
 			return 
 		}
@@ -62,7 +67,6 @@ func GetUser (storage *storage.MemoryStorage) gin.HandlerFunc {
 			return
 		}
 
-		user.Password = ""
 		c.JSON(http.StatusOK,user)
 	}
 }
@@ -101,7 +105,6 @@ func UpdateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 		}
 
 		user,_ := storage.GetUser(id)
-		user.Password = ""
 		c.JSON(http.StatusOK,user)
 	}
 }

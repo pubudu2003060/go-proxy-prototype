@@ -25,6 +25,12 @@ func (s *MemoryStorage) CreateUser(user *models.User) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
+	for _,u := range s.users {
+		if u.Username == user.Username {
+			return fmt.Errorf("username %s already Exit",user.Username)
+		}
+	}
+
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 	s.users[user.Id] = user
@@ -62,7 +68,7 @@ func (s *MemoryStorage)  ListUsers()([]*models.User,error){
 	s.mu.RLock()
 	defer s.mu.RUnlock()
     
-	users := make([]*models.User,len(s.users))
+	users := []*models.User{}
 	for _,user := range s.users {
 		users = append(users, user)
 	}
