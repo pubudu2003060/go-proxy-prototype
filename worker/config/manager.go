@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/pubudu2003060/go-proxy-prototype/worker/models"
 )
@@ -19,6 +20,18 @@ func NewConfigManager(captainURL string) *ConfigManager {
 	return &ConfigManager{
 		captainURL: captainURL,
 		pools:      make(map[string]*models.Pool),
+	}
+}
+
+func (m *ConfigManager) StartSync(interval time.Duration) {
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+	
+	// Initial sync
+	m.syncConfig()
+	
+	for range ticker.C {
+		m.syncConfig()
 	}
 }
 
