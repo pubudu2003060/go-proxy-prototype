@@ -52,62 +52,126 @@ func initSampleData(storage *storage.MemoryStorage) {
 	storage.CreateUser(&models.User{
 		Id:           "user1",
 		Username:     "testuser",
-		Password:     "testpass", // In real implementation, this should be hashed
-		DataLimit:    1000000000, // 1GB
+		Password:     "testpass", 
+		DataLimit:    1000000000, 
 		DataUsed:     0,
-		AllowedPools: []string{"smart-usa", "mixed-pool"},
+		AllowedPools: []string{"asia1,eu1,america1"},
 		Status:       "active",
 		CreatedAt:    time.Now(),
 	})
 
 	// Create sample postorage
 	storage.CreatePool(&models.Pool{
-		Name:      "smart-usa",
-		Continent: "usa",
-		Tag:       "usa",
-		Subdomain: "smart.us",
-		CC3:       "SMRT",
-		PortStart: 7000,
-		PortEnd:   7999,
+		Name:      "asia1",
+		Continent: "asia",
+		Tag:       "asia1",
+		Subdomain: "asia1.x",
+		CC3:       "asia",
+		PortStart: 6000,
+		PortEnd:   6999,
 		Flag:      0,
 		Outs: []models.Out{
 			{
-				Format:       "user-%s",
-				UpstreamPort: 8000,
-				Domain:       "smartproxy.com",
-				Weight:       50,
+				Format:       "cFAPhxyG:9dgbjKKV-%s",
+				UpstreamPort: 6502,
+				Domain:       "netnutasia.x.proxiess.com",
+				Weight:       100,
 			},
 		},
 	})
 
 	storage.CreatePool(&models.Pool{
-		Name:      "mixed-pool",
-		Continent: "global",
-		Tag:       "global",
-		Subdomain: "mixed.global",
-		CC3:       "MIX",
-		PortStart: 8000,
-		PortEnd:   8999,
+		Name:      "asia2",
+		Continent: "asia",
+		Tag:       "asia2",
+		Subdomain: "asia2.x",
+		CC3:       "asia",
+		PortStart: 6000,
+		PortEnd:   6999,
 		Flag:      0,
 		Outs: []models.Out{
 			{
-				Format:       "user-%s-country-us",
-				UpstreamPort: 8000,
-				Domain:       "brightdata.com",
-				Weight:       30,
-			},
-			{
-				Format:       "user-%s-country-eu",
-				UpstreamPort: 8000,
-				Domain:       "oxylabs.io",
-				Weight:       30,
-			},
-			{
-				Format:       "user-%s-session-%s",
-				UpstreamPort: 8000,
-				Domain:       "netnut.io",
-				Weight:       40,
+				Format:       "cFAPhxyG:9dgbjKKV-%s",
+				UpstreamPort: 6502,
+				Domain:       "netnutasia.x.proxiess.com",
+				Weight:       100,
 			},
 		},
 	})
+
+	storage.CreatePool(&models.Pool{
+		Name:      "eu1",
+		Continent: "eu",
+		Tag:       "eu1",
+		Subdomain: "eu1.x",
+		CC3:       "eu",
+		PortStart: 6000,
+		PortEnd:   6999,
+		Flag:      0,
+		Outs: []models.Out{
+			{
+				Format:       "cFAPhxyG:9dgbjKKV-%s",
+				UpstreamPort: 6501,
+				Domain:       "netnuteu.x.proxiess.com",
+				Weight:       100,
+			},
+		},
+	})
+
+	storage.CreatePool(&models.Pool{
+		Name:      "eu2",
+		Continent: "eu",
+		Tag:       "eu2",
+		Subdomain: "eu2.x",
+		CC3:       "eu",
+		PortStart: 6000,
+		PortEnd:   6999,
+		Flag:      0,
+		Outs: []models.Out{
+			{
+				Format:       "cFAPhxyG:9dgbjKKV-%s",
+				UpstreamPort: 6501,
+				Domain:       "netnuteu.x.proxiess.com",
+				Weight:       100,
+			},
+		},
+	})
+
+		storage.CreatePool(&models.Pool{
+		Name:      "america1",
+		Continent: "america",
+		Tag:       "america1",
+		Subdomain: "america1.x",
+		CC3:       "america",
+		PortStart: 6000,
+		PortEnd:   6999,
+		Flag:      0,
+		Outs: []models.Out{
+			{
+				Format:       "cFAPhxyG:9dgbjKKV-%s",
+				UpstreamPort: 6500,
+				Domain:       "devnetnut.x.proxiess.com",
+				Weight:       100,
+			},
+		},
+	})
+
+	storage.CreatePool(&models.Pool{
+		Name:      "america2",
+		Continent: "america",
+		Tag:       "america2",
+		Subdomain: "america2.x",
+		CC3:       "america",
+		PortStart: 6000,
+		PortEnd:   6999,
+		Flag:      0,
+		Outs: []models.Out{
+			{
+				Format:       "cFAPhxyG:9dgbjKKV-%s",
+				UpstreamPort: 6500,
+				Domain:       "devnetnut.x.proxiess.com",
+				Weight:       100,
+			},
+		},
+	})	
 }
