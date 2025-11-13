@@ -32,7 +32,7 @@ func (r *UsageRepoter) ReportUsage(userID string, _bytes int64) {
 			return
 		}
 
-		resp,err := http.Post(r.captainURL+"api/v1/usage","application/json",bytes.NewBuffer(jsonData))
+		resp,err := http.Post(r.captainURL+"/api/v1/usage","application/json",bytes.NewBuffer(jsonData))
 		if err != nil {
 			log.Printf("Failed to report usage: %v", err)
 			return

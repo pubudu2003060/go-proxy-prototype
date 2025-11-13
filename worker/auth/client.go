@@ -3,6 +3,7 @@ package auth
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/pubudu2003060/go-proxy-prototype/worker/models"
@@ -29,16 +30,20 @@ func (c *AuthClient) Authenticate(username, password string) (*models.AuthRespon
 		return nil,err
 	}
 
-	resp,err := http.Post(c.captainURL+"api/v1/auth","application/json",bytes.NewBuffer(jsonData))
+	resp,err := http.Post(c.captainURL+"/api/v1/auth","application/json",bytes.NewBuffer(jsonData))
 	if err != nil {
 		return nil,err
 	}
 	defer resp.Body.Close()
-
+	
 	var authResp models.AuthResponse
 	if err := json.NewDecoder(resp.Body).Decode(&authResp);err != nil {
 		return nil,err
 	}
 
-	return &authResp,nil
+	if authResp.Success {
+   		return &authResp,nil
+	}
+
+	return nil,fmt.Errorf("authentication faild")
 }

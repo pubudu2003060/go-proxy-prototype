@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/pubudu2003060/go-proxy-prototype/worker/auth"
@@ -11,6 +12,8 @@ import (
 )
 
 func main() {
+	addr:= ":8081"
+
 	configManager := config.NewConfigManager("http://localhost:8080")
 
 	authClient := auth.NewAuthClient("http://localhost:8080")
@@ -21,8 +24,13 @@ func main() {
 
 	go configManager.StartSync(30 * time.Second)
 
-	log.Println("Enhanced HTTP proxy starting on :33080")
-	if err := proxy.Start(":33080"); err != nil {
-		log.Fatalf("Failed to start proxy: %v", err)
+	srv := &http.Server{
+		Addr:         addr,
+		Handler:      http.HandlerFunc(proxy.HandleConnection),
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		IdleTimeout:  60 * time.Second,
 	}
+	log.Printf("proxy listening on %s", addr)
+	log.Fatal(srv.ListenAndServe())
 }
