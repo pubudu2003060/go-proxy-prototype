@@ -55,17 +55,17 @@ func initSampleData(storage *storage.MemoryStorage) {
 		Password:     "testpass", 
 		DataLimit:    1000000000, 
 		DataUsed:     0,
-		AllowedPools: []string{"asia1,eu1,america1"},
+		AllowedPools: []string{"netnutasia,netnuteu,netnutamerica,pktasia,plteu,pktamerica"},
 		Status:       "active",
 		CreatedAt:    time.Now(),
 	})
 
 	// Create sample postorage
 	storage.CreatePool(&models.Pool{
-		Name:      "asia1",
+		Name:      "netnut asia",
 		Continent: "asia",
 		Tag:       "asia1",
-		Subdomain: "asia1.x",
+		Subdomain: "netnutasia.x",
 		CC3:       "asia",
 		PortStart: 6000,
 		PortEnd:   6999,
@@ -81,29 +81,29 @@ func initSampleData(storage *storage.MemoryStorage) {
 	})
 
 	storage.CreatePool(&models.Pool{
-		Name:      "asia2",
+		Name:      "pkt asia",
 		Continent: "asia",
 		Tag:       "asia2",
-		Subdomain: "asia2.x",
+		Subdomain: "pktasia.x",
 		CC3:       "asia",
 		PortStart: 6000,
 		PortEnd:   6999,
 		Flag:      0,
 		Outs: []models.Out{
 			{
-				Format:       "cFAPhxyG:9dgbjKKV-%s",
-				UpstreamPort: 6502,
-				Domain:       "netnutasia.x.proxiess.com",
+				Format:       "vdiujqXR:rGeJX4Hz-%s",
+				UpstreamPort: 31114,
+				Domain:       "pktasia.x.proxiess.com",
 				Weight:       100,
 			},
 		},
 	})
 
 	storage.CreatePool(&models.Pool{
-		Name:      "eu1",
+		Name:      "netnut eu",
 		Continent: "eu",
 		Tag:       "eu1",
-		Subdomain: "eu1.x",
+		Subdomain: "netnuteu.x",
 		CC3:       "eu",
 		PortStart: 6000,
 		PortEnd:   6999,
@@ -119,29 +119,29 @@ func initSampleData(storage *storage.MemoryStorage) {
 	})
 
 	storage.CreatePool(&models.Pool{
-		Name:      "eu2",
+		Name:      "pkt eu",
 		Continent: "eu",
 		Tag:       "eu2",
-		Subdomain: "eu2.x",
+		Subdomain: "pkteu.x",
 		CC3:       "eu",
 		PortStart: 6000,
 		PortEnd:   6999,
 		Flag:      0,
 		Outs: []models.Out{
 			{
-				Format:       "cFAPhxyG:9dgbjKKV-%s",
-				UpstreamPort: 6501,
-				Domain:       "netnuteu.x.proxiess.com",
+				Format:       "vdiujqXR:rGeJX4Hz-%s",
+				UpstreamPort: 31113,
+				Domain:       "pkteu.x.proxiess.com",
 				Weight:       100,
 			},
 		},
 	})
 
 		storage.CreatePool(&models.Pool{
-		Name:      "america1",
+		Name:      "netnut america",
 		Continent: "america",
 		Tag:       "america1",
-		Subdomain: "america1.x",
+		Subdomain: "netnutamerica.x",
 		CC3:       "america",
 		PortStart: 6000,
 		PortEnd:   6999,
@@ -150,26 +150,26 @@ func initSampleData(storage *storage.MemoryStorage) {
 			{
 				Format:       "cFAPhxyG:9dgbjKKV-%s",
 				UpstreamPort: 6500,
-				Domain:       "devnetnut.x.proxiess.com",
+				Domain:       "netnut.x.proxiess.com",
 				Weight:       100,
 			},
 		},
 	})
 
 	storage.CreatePool(&models.Pool{
-		Name:      "america2",
+		Name:      "pkt america",
 		Continent: "america",
 		Tag:       "america2",
-		Subdomain: "america2.x",
+		Subdomain: "pktamerica.x",
 		CC3:       "america",
 		PortStart: 6000,
 		PortEnd:   6999,
 		Flag:      0,
 		Outs: []models.Out{
 			{
-				Format:       "cFAPhxyG:9dgbjKKV-%s",
-				UpstreamPort: 6500,
-				Domain:       "devnetnut.x.proxiess.com",
+				Format:       "vdiujqXR:rGeJX4Hz-%s",
+				UpstreamPort: 31112,
+				Domain:       "pkt.x.proxiess.com",
 				Weight:       100,
 			},
 		},
