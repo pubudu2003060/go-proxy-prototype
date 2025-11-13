@@ -117,12 +117,6 @@ func (s *MemoryStorage) CreatePool(pool *models.Pool) error {
 		if v.Subdomain == pool.Subdomain {
 			return fmt.Errorf("pool with %s already exit",pool.Subdomain)
 		}
-		if v.PortEnd == pool.PortEnd {
-			return fmt.Errorf("pool with %d already exit",pool.PortEnd)
-		}
-		if v.PortStart == pool.PortStart {
-			return fmt.Errorf("pool with %d already exit",pool.PortStart)
-		}
 	}
 	
 	s.pools[pool.Name] = pool
