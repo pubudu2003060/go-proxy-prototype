@@ -81,19 +81,19 @@ func initSampleData(storage *storage.MemoryStorage) {
 	})
 
 	storage.CreatePool(&models.Pool{
-		Name:      "pkt asia",
+		Name:      "iproyal asia",
 		Continent: "asia",
 		Tag:       "asia2",
-		Subdomain: "pktasia.x",
+		Subdomain: "iproyalasia.x",
 		CC3:       "asia",
 		PortStart: 6000,
 		PortEnd:   6999,
 		Flag:      0,
 		Outs: []models.Out{
 			{
-				Format:       "vdiujqXR:rGeJX4Hz-%s",
-				UpstreamPort: 31114,
-				Domain:       "pktasia.x.proxiess.com",
+				Format:       "otJhMuv0:5uhhT0Ds-%s",
+				UpstreamPort: 12322,
+				Domain:       "iproyalasia.x.proxiess.com",
 				Weight:       100,
 			},
 		},
@@ -119,19 +119,19 @@ func initSampleData(storage *storage.MemoryStorage) {
 	})
 
 	storage.CreatePool(&models.Pool{
-		Name:      "pkt eu",
+		Name:      "iproyal eu",
 		Continent: "eu",
 		Tag:       "eu2",
-		Subdomain: "pkteu.x",
+		Subdomain: "iproyaleu.x",
 		CC3:       "eu",
 		PortStart: 6000,
 		PortEnd:   6999,
 		Flag:      0,
 		Outs: []models.Out{
 			{
-				Format:       "vdiujqXR:rGeJX4Hz-%s",
-				UpstreamPort: 31113,
-				Domain:       "pkteu.x.proxiess.com",
+				Format:       "otJhMuv0:5uhhT0Ds-%s",
+				UpstreamPort: 12323,
+				Domain:       "iproyaleu.x.proxiess.com",
 				Weight:       100,
 			},
 		},
@@ -157,19 +157,19 @@ func initSampleData(storage *storage.MemoryStorage) {
 	})
 
 	storage.CreatePool(&models.Pool{
-		Name:      "pkt america",
+		Name:      "iproyal america",
 		Continent: "america",
 		Tag:       "america2",
-		Subdomain: "pktamerica.x",
+		Subdomain: "iproyalamerica.x",
 		CC3:       "america",
 		PortStart: 6000,
 		PortEnd:   6999,
 		Flag:      0,
 		Outs: []models.Out{
 			{
-				Format:       "vdiujqXR:rGeJX4Hz-%s",
-				UpstreamPort: 31112,
-				Domain:       "pkt.x.proxiess.com",
+				Format:       "otJhMuv0:5uhhT0Ds-%s",
+				UpstreamPort: 12321,
+				Domain:       "iproyal.x.proxiess.com",
 				Weight:       100,
 			},
 		},
