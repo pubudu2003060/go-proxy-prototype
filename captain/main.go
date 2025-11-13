@@ -55,7 +55,7 @@ func initSampleData(storage *storage.MemoryStorage) {
 		Password:     "testpass", 
 		DataLimit:    1000000000, 
 		DataUsed:     0,
-		AllowedPools: []string{"netnutasia,netnuteu,netnutamerica,pktasia,plteu,pktamerica"},
+		AllowedPools: []string{"netnut asia","netnut eu","netnut america","iproyal asia","iproyal eu","iproyal america"},
 		Status:       "active",
 		CreatedAt:    time.Now(),
 	})
