@@ -2,10 +2,10 @@ package models
 
 import "time"
 
-type User struct{
-	Id string `json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+type User struct {
+	Id           string    `json:"id"`
+	Username     string    `json:"username"`
+	Password     string    `json:"password"`
 	DataLimit    int64     `json:"data_limit"`
 	DataUsed     int64     `json:"data_used"`
 	AllowedPools []string  `json:"allowed_pools"`
@@ -37,15 +37,22 @@ type AuthRequest struct {
 }
 
 type AuthResponse struct {
-	Success     bool     `json:"success"`
-	UserID      string   `json:"user_id,omitempty"`
+	Success      bool     `json:"success"`
+	UserID       string   `json:"user_id,omitempty"`
 	AllowedPools []string `json:"allowed_pools,omitempty"`
-	DataLimit   int64    `json:"data_limit,omitempty"`
-	DataUsed    int64    `json:"data_used,omitempty"`
-	Message     string   `json:"message,omitempty"`
+	DataLimit    int64    `json:"data_limit,omitempty"`
+	DataUsed     int64    `json:"data_used,omitempty"`
+	Message      string   `json:"message,omitempty"`
 }
 
 type UsageReport struct {
 	UserID string `json:"user_id" binding:"required"`
 	Bytes  int64  `json:"bytes" binding:"required"`
+}
+
+type GenerateRequest struct {
+	UserID   string `json:"user_id" binding:"required"`
+	UpStream string `json:"upstream" binding:"required"`
+	Country  string `json:"country" binding:"required"`
+	IsSticky bool   `json:"issticky" binding:"required"`
 }

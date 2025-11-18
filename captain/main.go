@@ -13,7 +13,7 @@ import (
 func main() {
 
 	storage := storage.NewMemoryStorage()
-	
+
 	initSampleData(storage)
 
 	r := gin.Default()
@@ -24,14 +24,15 @@ func main() {
 	r.GET("/api/v1/users/:id", handlers.GetUser(storage))
 	r.PUT("/api/v1/users/:id", handlers.UpdateUser(storage))
 	r.DELETE("/api/v1/users/:id", handlers.DeleteUser(storage))
-	
+	//r.POST("/api/v1/generate_proxy_string", handlers.Generate(storage))
+
 	// Pool management
 	r.POST("/api/v1/pools", handlers.CreatePool(storage))
 	r.GET("/api/v1/pools", handlers.ListPools(storage))
 	r.GET("/api/v1/pools/:name", handlers.GetPool(storage))
 	r.PUT("/api/v1/pools/:name", handlers.UpdatePool(storage))
 	r.DELETE("/api/v1/pools/:name", handlers.DeletePool(storage))
-	
+
 	// Worker endpoints
 	r.GET("/api/v1/config", handlers.GetConfig(storage))
 	r.POST("/api/v1/auth", handlers.AuthenticateUser(storage))
@@ -52,16 +53,49 @@ func initSampleData(storage *storage.MemoryStorage) {
 	storage.CreateUser(&models.User{
 		Id:           "user1",
 		Username:     "testuser",
-		Password:     "testpass", 
-		DataLimit:    1000000000, 
+		Password:     "testpass",
+		DataLimit:    1000000000,
 		DataUsed:     0,
-		AllowedPools: []string{"netnut asia","netnut eu","netnut america","iproyal asia","iproyal eu","iproyal america"},
+		AllowedPools: []string{"netnut asia", "netnut eu", "netnut america", "iproyal asia", "iproyal eu", "iproyal america"},
 		Status:       "active",
 		CreatedAt:    time.Now(),
 	})
 
-	// Create sample postorage
-	storage.CreatePool(&models.Pool{
+	//create sample countries
+	japan := models.Country{
+		Code: "JP",
+	}
+	storage.CreateCountry(&japan)
+
+	india := models.Country{
+		Code: "IN",
+	}
+	storage.CreateCountry(&india)
+
+	uk := models.Country{
+		Code: "GB",
+	}
+	storage.CreateCountry(&uk)
+
+	germany := models.Country{
+		Code: "DE",
+	}
+	storage.CreateCountry(&germany)
+
+	usa := models.Country{
+		Code: "US",
+	}
+	storage.CreateCountry(&usa)
+
+	canada := models.Country{
+		Code: "CA",
+	}
+	storage.CreateCountry(&canada)
+
+	//create sampel pools outs
+	//iproyal - username123:password321-country-dk_session-sgn34f3e_lifetime-1h@geo.iproyal.com:12321
+	//netnut - USERNAME-res-nl:PASSWORD-sid-947045456@gw.netnut.net:5959
+	netnutasia := models.Pool{
 		Name:      "netnut asia",
 		Continent: "asia",
 		Tag:       "asia1",
@@ -78,9 +112,10 @@ func initSampleData(storage *storage.MemoryStorage) {
 				Weight:       100,
 			},
 		},
-	})
+	}
+	storage.CreatePool(&netnutasia)
 
-	storage.CreatePool(&models.Pool{
+	iproyalasia := models.Pool{
 		Name:      "iproyal asia",
 		Continent: "asia",
 		Tag:       "asia2",
@@ -97,9 +132,10 @@ func initSampleData(storage *storage.MemoryStorage) {
 				Weight:       100,
 			},
 		},
-	})
+	}
+	storage.CreatePool(&iproyalasia)
 
-	storage.CreatePool(&models.Pool{
+	netnuteu := models.Pool{
 		Name:      "netnut eu",
 		Continent: "eu",
 		Tag:       "eu1",
@@ -116,9 +152,10 @@ func initSampleData(storage *storage.MemoryStorage) {
 				Weight:       100,
 			},
 		},
-	})
+	}
+	storage.CreatePool(&netnuteu)
 
-	storage.CreatePool(&models.Pool{
+	iproyaleu := models.Pool{
 		Name:      "iproyal eu",
 		Continent: "eu",
 		Tag:       "eu2",
@@ -135,9 +172,10 @@ func initSampleData(storage *storage.MemoryStorage) {
 				Weight:       100,
 			},
 		},
-	})
+	}
+	storage.CreatePool(&iproyaleu)
 
-		storage.CreatePool(&models.Pool{
+	netnutamerica := models.Pool{
 		Name:      "netnut america",
 		Continent: "america",
 		Tag:       "america1",
@@ -154,9 +192,11 @@ func initSampleData(storage *storage.MemoryStorage) {
 				Weight:       100,
 			},
 		},
-	})
+	}
 
-	storage.CreatePool(&models.Pool{
+	storage.CreatePool(&netnutamerica)
+
+	iproyalamerica := models.Pool{
 		Name:      "iproyal america",
 		Continent: "america",
 		Tag:       "america2",
@@ -173,5 +213,49 @@ func initSampleData(storage *storage.MemoryStorage) {
 				Weight:       100,
 			},
 		},
-	})	
+	}
+
+	storage.CreatePool(&iproyalamerica)
+
+	worker1 := models.Worker{
+		WName: "asia",
+		Pools: []*models.Pool{&netnutasia, &iproyalasia},
+	}
+
+	worker2 := models.Worker{
+		WName: "eu",
+		Pools: []*models.Pool{&netnuteu, &iproyaleu},
+	}
+
+	worker3 := models.Worker{
+		WName: "america",
+		Pools: []*models.Pool{&netnutamerica, &iproyalamerica},
+	}
+
+	storage.CreateWorker(&worker1)
+	storage.CreateWorker(&worker2)
+	storage.CreateWorker(&worker3)
+
+	//create sampe regions
+	asia := models.Region{
+		RName:     "asia",
+		Countries: []models.Country{japan, india},
+		Workers:   []models.Worker{worker1},
+	}
+	storage.CreateRegion(&asia)
+
+	eu := models.Region{
+		RName:     "eu",
+		Countries: []models.Country{uk, germany},
+		Workers:   []models.Worker{worker2},
+	}
+	storage.CreateRegion(&eu)
+
+	america := models.Region{
+		RName:     "america",
+		Countries: []models.Country{usa, canada},
+		Workers:   []models.Worker{worker3},
+	}
+	storage.CreateRegion(&america)
+
 }

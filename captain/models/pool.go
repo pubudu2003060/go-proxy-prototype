@@ -1,5 +1,20 @@
 package models
 
+type Country struct {
+	Code string
+}
+
+type Region struct {
+	RName     string
+	Countries []Country
+	Workers   []Worker
+}
+
+type Worker struct {
+	WName string
+	Pools []*Pool
+}
+
 type Pool struct {
 	Name      string `json:"name"`
 	Continent string `json:"continent"`

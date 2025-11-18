@@ -15,7 +15,7 @@ func CreatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		
+
 		pool := &models.Pool{
 			Name:      req.Name,
 			Continent: req.Continent,
@@ -26,12 +26,12 @@ func CreatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 			PortEnd:   req.PortEnd,
 			Outs:      req.Outs,
 		}
-		
+
 		if err := storage.CreatePool(pool); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		
+
 		c.JSON(http.StatusCreated, pool)
 	}
 }
@@ -43,7 +43,7 @@ func ListPools(storage *storage.MemoryStorage) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		
+
 		c.JSON(http.StatusOK, pools)
 	}
 }
@@ -51,13 +51,13 @@ func ListPools(storage *storage.MemoryStorage) gin.HandlerFunc {
 func GetPool(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		name := c.Param("name")
-		
+
 		pool, err := storage.GetPool(name)
 		if err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
-		
+
 		c.JSON(http.StatusOK, pool)
 	}
 }
@@ -70,8 +70,8 @@ func UpdatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		
-		if err := storage.UpdatePool(name,func(pool *models.Pool) error {
+
+		if err := storage.UpdatePool(name, func(pool *models.Pool) error {
 			if req.Continent != nil {
 				pool.Continent = *req.Continent
 			}
@@ -93,12 +93,12 @@ func UpdatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 			if req.Tag != nil {
 				pool.Tag = *req.Tag
 			}
-			return  nil
+			return nil
 		}); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
-		
+
 		c.JSON(http.StatusNoContent, struct{}{})
 	}
 }
@@ -106,12 +106,12 @@ func UpdatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 func DeletePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		name := c.Param("name")
-		
+
 		if err := storage.DeletePool(name); err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
-		
+
 		c.JSON(http.StatusOK, gin.H{"message": "Pool deleted"})
 	}
 }

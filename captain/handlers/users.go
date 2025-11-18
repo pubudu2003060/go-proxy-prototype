@@ -12,75 +12,75 @@ import (
 )
 
 func CreateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
-	return func(c *gin.Context){
+	return func(c *gin.Context) {
 		var req models.CreateUserRequest
-		if err := c.ShouldBindJSON(&req);err != nil {
-			c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
-			return 
-		}
-
-		user := &models.User{
-			Id: uuid.New().String(),
-			Username: req.Username,
-			Password: req.Password,
-			DataLimit: req.DataLimit,
-			DataUsed: 0,
-			AllowedPools: req.AllowedPools,
-			IPWhitelist: req.IPWhitelist,
-			Status: "active",
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
-		}
-
-		if err := storage.CreateUser(user);err != nil {
-			if strings.Contains(err.Error(),"already Exit") {
-				c.JSON(http.StatusConflict,gin.H{"error":err.Error()})
-				return
-			}
-			c.JSON(http.StatusInternalServerError,gin.H{"error":err.Error()})
-			return 
-		}
-
-		c.JSON(http.StatusCreated,user)
-	}
-}
-
-func ListUsers (storage *storage.MemoryStorage) gin.HandlerFunc{
-	return func(c *gin.Context){
-		users,err := storage.ListUsers()
-		if err != nil {
-			c.JSON(http.StatusInternalServerError,gin.H{"error":err.Error()})
-			return 
-		}
-
-		c.JSON(http.StatusOK,users)
-	}
-}
-
-func GetUser (storage *storage.MemoryStorage) gin.HandlerFunc {
-	return func(c *gin.Context){
-		id := c.Param("id")
-
-		user,err := storage.GetUser(id)
-		if err != nil {
-			c.JSON(http.StatusNotFound,gin.H{"error":err.Error()})
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		c.JSON(http.StatusOK,user)
+		user := &models.User{
+			Id:           uuid.New().String(),
+			Username:     req.Username,
+			Password:     req.Password,
+			DataLimit:    req.DataLimit,
+			DataUsed:     0,
+			AllowedPools: req.AllowedPools,
+			IPWhitelist:  req.IPWhitelist,
+			Status:       "active",
+			CreatedAt:    time.Now(),
+			UpdatedAt:    time.Now(),
+		}
+
+		if err := storage.CreateUser(user); err != nil {
+			if strings.Contains(err.Error(), "already Exit") {
+				c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
+				return
+			}
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusCreated, user)
+	}
+}
+
+func ListUsers(storage *storage.MemoryStorage) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		users, err := storage.ListUsers()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, users)
+	}
+}
+
+func GetUser(storage *storage.MemoryStorage) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id := c.Param("id")
+
+		user, err := storage.GetUser(id)
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, user)
 	}
 }
 
 func UpdateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
-	return func(c *gin.Context){
+	return func(c *gin.Context) {
 		id := c.Param("id")
 		var req models.UpdateUserRequest
-		if err := c.ShouldBindJSON(&req);err != nil {
-			c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
-			return 
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 
-		err := storage.UpdateUser(id,func (user *models.User) error {
+		err := storage.UpdateUser(id, func(user *models.User) error {
 			if req.Password != nil {
 				user.Password = *req.Password
 			}
@@ -100,12 +100,12 @@ func UpdateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 		})
 
 		if err != nil {
-			c.JSON(http.StatusNotFound,gin.H{"error":err.Error()})
-			return 
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
 		}
 
-		user,_ := storage.GetUser(id)
-		c.JSON(http.StatusOK,user)
+		user, _ := storage.GetUser(id)
+		c.JSON(http.StatusOK, user)
 	}
 }
 
@@ -116,9 +116,34 @@ func DeleteUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 			return
 		}
-		
+
 		c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
 	}
 }
 
+/*func Generate(storage *storage.MemoryStorage) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var generateRequest models.GenerateRequest
+		if err := c.ShouldBindJSON(&generateRequest); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
 
+		countryStruct := storage.Country[generateRequest.Country]
+		var r *models.Region
+
+		for _,region := range storage.Region {
+			for _,country := range region.Countries {
+				if country.Code == countryStruct.Code {
+					r = region
+				}
+			}
+		}
+
+		for _,v := range r.Workers {
+
+		}
+
+		s := generateRequest.UpStream+r.RName+"x.proxies.com:8081"
+
+	}
+}*/
