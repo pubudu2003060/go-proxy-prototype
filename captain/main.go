@@ -63,31 +63,37 @@ func initSampleData(storage *storage.MemoryStorage) {
 
 	//create sample countries
 	japan := models.Country{
+		Name: "japan",
 		Code: "JP",
 	}
 	storage.CreateCountry(&japan)
 
 	india := models.Country{
+		Name: "india",
 		Code: "IN",
 	}
 	storage.CreateCountry(&india)
 
 	uk := models.Country{
+		Name: "united kindom",
 		Code: "GB",
 	}
 	storage.CreateCountry(&uk)
 
 	germany := models.Country{
+		Name: "germany",
 		Code: "DE",
 	}
 	storage.CreateCountry(&germany)
 
 	usa := models.Country{
+		Name: "usa",
 		Code: "US",
 	}
 	storage.CreateCountry(&usa)
 
 	canada := models.Country{
+		Name: "canada",
 		Code: "CA",
 	}
 	storage.CreateCountry(&canada)
@@ -97,13 +103,10 @@ func initSampleData(storage *storage.MemoryStorage) {
 	//netnut - USERNAME-res-nl:PASSWORD-sid-947045456@gw.netnut.net:5959
 	netnutasia := models.Pool{
 		Name:      "netnut asia",
-		Continent: "asia",
-		Tag:       "asia1",
+		Region:    "asia",
 		Subdomain: "netnutasia.x",
-		CC3:       "asia",
 		PortStart: 6000,
 		PortEnd:   6999,
-		Flag:      0,
 		Outs: []models.Out{
 			{
 				Format:       "cFAPhxyG:9dgbjKKV-%s",
@@ -117,13 +120,9 @@ func initSampleData(storage *storage.MemoryStorage) {
 
 	iproyalasia := models.Pool{
 		Name:      "iproyal asia",
-		Continent: "asia",
-		Tag:       "asia2",
 		Subdomain: "iproyalasia.x",
-		CC3:       "asia",
 		PortStart: 6000,
 		PortEnd:   6999,
-		Flag:      0,
 		Outs: []models.Out{
 			{
 				Format:       "otJhMuv0:5uhhT0Ds-%s",
@@ -137,13 +136,9 @@ func initSampleData(storage *storage.MemoryStorage) {
 
 	netnuteu := models.Pool{
 		Name:      "netnut eu",
-		Continent: "eu",
-		Tag:       "eu1",
 		Subdomain: "netnuteu.x",
-		CC3:       "eu",
 		PortStart: 6000,
 		PortEnd:   6999,
-		Flag:      0,
 		Outs: []models.Out{
 			{
 				Format:       "cFAPhxyG:9dgbjKKV-%s",
@@ -157,13 +152,9 @@ func initSampleData(storage *storage.MemoryStorage) {
 
 	iproyaleu := models.Pool{
 		Name:      "iproyal eu",
-		Continent: "eu",
-		Tag:       "eu2",
 		Subdomain: "iproyaleu.x",
-		CC3:       "eu",
 		PortStart: 6000,
 		PortEnd:   6999,
-		Flag:      0,
 		Outs: []models.Out{
 			{
 				Format:       "otJhMuv0:5uhhT0Ds-%s",
@@ -177,13 +168,9 @@ func initSampleData(storage *storage.MemoryStorage) {
 
 	netnutamerica := models.Pool{
 		Name:      "netnut america",
-		Continent: "america",
-		Tag:       "america1",
 		Subdomain: "netnutamerica.x",
-		CC3:       "america",
 		PortStart: 6000,
 		PortEnd:   6999,
-		Flag:      0,
 		Outs: []models.Out{
 			{
 				Format:       "cFAPhxyG:9dgbjKKV-%s",
@@ -198,13 +185,9 @@ func initSampleData(storage *storage.MemoryStorage) {
 
 	iproyalamerica := models.Pool{
 		Name:      "iproyal america",
-		Continent: "america",
-		Tag:       "america2",
 		Subdomain: "iproyalamerica.x",
-		CC3:       "america",
 		PortStart: 6000,
 		PortEnd:   6999,
-		Flag:      0,
 		Outs: []models.Out{
 			{
 				Format:       "otJhMuv0:5uhhT0Ds-%s",
@@ -218,18 +201,18 @@ func initSampleData(storage *storage.MemoryStorage) {
 	storage.CreatePool(&iproyalamerica)
 
 	worker1 := models.Worker{
-		WName: "asia",
-		Pools: []*models.Pool{&netnutasia, &iproyalasia},
+		Name:      "asia",
+		SubDomain: "asia.proxy.com",
 	}
 
 	worker2 := models.Worker{
-		WName: "eu",
-		Pools: []*models.Pool{&netnuteu, &iproyaleu},
+		Name:      "eu",
+		SubDomain: "eu.proxy.com",
 	}
 
 	worker3 := models.Worker{
-		WName: "america",
-		Pools: []*models.Pool{&netnutamerica, &iproyalamerica},
+		Name:      "america",
+		SubDomain: "america.proxy.com",
 	}
 
 	storage.CreateWorker(&worker1)
@@ -238,23 +221,23 @@ func initSampleData(storage *storage.MemoryStorage) {
 
 	//create sampe regions
 	asia := models.Region{
-		RName:     "asia",
+		Name:      "asia",
 		Countries: []models.Country{japan, india},
-		Workers:   []models.Worker{worker1},
+		Pools:     []models.Pool{iproyalasia, netnutasia},
 	}
 	storage.CreateRegion(&asia)
 
 	eu := models.Region{
-		RName:     "eu",
+		Name:      "eu",
 		Countries: []models.Country{uk, germany},
-		Workers:   []models.Worker{worker2},
+		Pools:     []models.Pool{iproyaleu, netnuteu},
 	}
 	storage.CreateRegion(&eu)
 
 	america := models.Region{
-		RName:     "america",
+		Name:      "america",
 		Countries: []models.Country{usa, canada},
-		Workers:   []models.Worker{worker3},
+		Pools:     []models.Pool{iproyalamerica, netnutamerica},
 	}
 	storage.CreateRegion(&america)
 

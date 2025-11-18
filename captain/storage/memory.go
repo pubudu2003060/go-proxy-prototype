@@ -198,14 +198,12 @@ func (s *MemoryStorage) CreateWorker(worker *models.Worker) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	for _, w := range s.Workers {
-		if w.WName == worker.WName {
-			return fmt.Errorf("worker with %s already Exit", w.WName)
-		}
+	if _, ok := s.Workers[worker.Name]; ok {
+		return fmt.Errorf("worker with %s already Exit", worker.Name)
 	}
 
-	s.Workers[worker.WName] = worker
-	fmt.Printf("worker created %v \n", s.Workers[worker.WName])
+	s.Workers[worker.Name] = worker
+	fmt.Printf("worker created %v \n", s.Workers[worker.Name])
 
 	return nil
 }
@@ -214,14 +212,12 @@ func (s *MemoryStorage) CreateRegion(region *models.Region) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	for _, r := range s.Region {
-		if r.RName == region.RName {
-			return fmt.Errorf("region with %s already Exit", r.RName)
-		}
+	if _, ok := s.Region[region.Name]; ok {
+		return fmt.Errorf("region with %s already Exit", region.Name)
 	}
 
-	s.Region[region.RName] = region
-	fmt.Printf("region created %v \n", s.Region[region.RName])
+	s.Region[region.Name] = region
+	fmt.Printf("region created %v \n", s.Region[region.Name])
 
 	return nil
 }
@@ -230,10 +226,8 @@ func (s *MemoryStorage) CreateCountry(country *models.Country) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	for _, c := range s.Country {
-		if c.Code == country.Code {
-			return fmt.Errorf("cuntry with %s already Exit", country.Code)
-		}
+	if _, ok := s.Country[country.Name]; ok {
+		return fmt.Errorf("cuntry with %s already Exit", country.Code)
 	}
 
 	s.Country[country.Code] = country

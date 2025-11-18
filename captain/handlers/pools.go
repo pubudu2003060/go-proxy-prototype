@@ -18,10 +18,8 @@ func CreatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 
 		pool := &models.Pool{
 			Name:      req.Name,
-			Continent: req.Continent,
-			Tag:       req.Tag,
+			Region:    req.Region,
 			Subdomain: req.Subdomain,
-			CC3:       req.CC3,
 			PortStart: req.PortStart,
 			PortEnd:   req.PortEnd,
 			Outs:      req.Outs,
@@ -72,11 +70,8 @@ func UpdatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 		}
 
 		if err := storage.UpdatePool(name, func(pool *models.Pool) error {
-			if req.Continent != nil {
-				pool.Continent = *req.Continent
-			}
-			if req.CC3 != nil {
-				pool.CC3 = *req.CC3
+			if req.Region != nil {
+				pool.Region = *req.Region
 			}
 			if req.Outs != nil {
 				pool.Outs = *req.Outs
@@ -89,9 +84,6 @@ func UpdatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 			}
 			if req.Subdomain != nil {
 				pool.Subdomain = *req.Subdomain
-			}
-			if req.Tag != nil {
-				pool.Tag = *req.Tag
 			}
 			return nil
 		}); err != nil {
