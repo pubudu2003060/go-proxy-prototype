@@ -24,7 +24,7 @@ func main() {
 	r.GET("/api/v1/users/:id", handlers.GetUser(storage))
 	r.PUT("/api/v1/users/:id", handlers.UpdateUser(storage))
 	r.DELETE("/api/v1/users/:id", handlers.DeleteUser(storage))
-	//r.POST("/api/v1/generate_proxy_string", handlers.Generate(storage))
+	r.POST("/api/v1/users/proxy-string", handlers.Generate(storage))
 
 	// Pool management
 	r.POST("/api/v1/pools", handlers.CreatePool(storage))
@@ -56,7 +56,7 @@ func initSampleData(storage *storage.MemoryStorage) {
 		Password:     "testpass",
 		DataLimit:    1000000000,
 		DataUsed:     0,
-		AllowedPools: []string{"netnut asia", "netnut eu", "netnut america", "iproyal asia", "iproyal eu", "iproyal america"},
+		AllowedPools: []string{"netnutasia", "netnuteu", "netnutamerica", "iproyalasia", "iproyaleu", "iproyalamerica"},
 		Status:       "active",
 		CreatedAt:    time.Now(),
 	})
@@ -102,11 +102,10 @@ func initSampleData(storage *storage.MemoryStorage) {
 	//iproyal - username123:password321-country-dk_session-sgn34f3e_lifetime-1h@geo.iproyal.com:12321
 	//netnut - USERNAME-res-nl:PASSWORD-sid-947045456@gw.netnut.net:5959
 	netnutasia := models.Pool{
-		Name:      "netnut asia",
+		Name:      "netnutasia",
 		Region:    "asia",
 		Subdomain: "netnutasia.x",
-		PortStart: 6000,
-		PortEnd:   6999,
+		Port:      6000,
 		Outs: []models.Out{
 			{
 				Format:       "cFAPhxyG:9dgbjKKV-%s",
@@ -119,10 +118,9 @@ func initSampleData(storage *storage.MemoryStorage) {
 	storage.CreatePool(&netnutasia)
 
 	iproyalasia := models.Pool{
-		Name:      "iproyal asia",
+		Name:      "iproyalasia",
 		Subdomain: "iproyalasia.x",
-		PortStart: 6000,
-		PortEnd:   6999,
+		Port:      6000,
 		Outs: []models.Out{
 			{
 				Format:       "otJhMuv0:5uhhT0Ds-%s",
@@ -135,10 +133,9 @@ func initSampleData(storage *storage.MemoryStorage) {
 	storage.CreatePool(&iproyalasia)
 
 	netnuteu := models.Pool{
-		Name:      "netnut eu",
+		Name:      "netnuteu",
 		Subdomain: "netnuteu.x",
-		PortStart: 6000,
-		PortEnd:   6999,
+		Port:      6000,
 		Outs: []models.Out{
 			{
 				Format:       "cFAPhxyG:9dgbjKKV-%s",
@@ -151,10 +148,9 @@ func initSampleData(storage *storage.MemoryStorage) {
 	storage.CreatePool(&netnuteu)
 
 	iproyaleu := models.Pool{
-		Name:      "iproyal eu",
+		Name:      "iproyaleu",
 		Subdomain: "iproyaleu.x",
-		PortStart: 6000,
-		PortEnd:   6999,
+		Port:      6000,
 		Outs: []models.Out{
 			{
 				Format:       "otJhMuv0:5uhhT0Ds-%s",
@@ -167,10 +163,9 @@ func initSampleData(storage *storage.MemoryStorage) {
 	storage.CreatePool(&iproyaleu)
 
 	netnutamerica := models.Pool{
-		Name:      "netnut america",
+		Name:      "netnutamerica",
 		Subdomain: "netnutamerica.x",
-		PortStart: 6000,
-		PortEnd:   6999,
+		Port:      6000,
 		Outs: []models.Out{
 			{
 				Format:       "cFAPhxyG:9dgbjKKV-%s",
@@ -184,10 +179,9 @@ func initSampleData(storage *storage.MemoryStorage) {
 	storage.CreatePool(&netnutamerica)
 
 	iproyalamerica := models.Pool{
-		Name:      "iproyal america",
+		Name:      "iproyalamerica",
 		Subdomain: "iproyalamerica.x",
-		PortStart: 6000,
-		PortEnd:   6999,
+		Port:      6000,
 		Outs: []models.Out{
 			{
 				Format:       "otJhMuv0:5uhhT0Ds-%s",
@@ -201,18 +195,18 @@ func initSampleData(storage *storage.MemoryStorage) {
 	storage.CreatePool(&iproyalamerica)
 
 	worker1 := models.Worker{
-		Name:      "asia",
-		SubDomain: "asia.proxy.com",
+		Name:       "asia",
+		SubDomains: []string{"iproyalamerica.x", "netnutamerica.x"},
 	}
 
 	worker2 := models.Worker{
-		Name:      "eu",
-		SubDomain: "eu.proxy.com",
+		Name:       "eu",
+		SubDomains: []string{"iproyalasia.x", "netnutasia.x"},
 	}
 
 	worker3 := models.Worker{
-		Name:      "america",
-		SubDomain: "america.proxy.com",
+		Name:       "america",
+		SubDomains: []string{"iproyaleu.x", "netnuteu.x"},
 	}
 
 	storage.CreateWorker(&worker1)

@@ -20,8 +20,7 @@ func CreatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 			Name:      req.Name,
 			Region:    req.Region,
 			Subdomain: req.Subdomain,
-			PortStart: req.PortStart,
-			PortEnd:   req.PortEnd,
+			Port:      req.Port,
 			Outs:      req.Outs,
 		}
 
@@ -76,11 +75,8 @@ func UpdatePool(storage *storage.MemoryStorage) gin.HandlerFunc {
 			if req.Outs != nil {
 				pool.Outs = *req.Outs
 			}
-			if req.PortEnd != nil {
-				pool.PortEnd = *req.PortEnd
-			}
-			if req.PortStart != nil {
-				pool.PortStart = *req.PortStart
+			if req.Port != nil {
+				pool.Port = *req.Port
 			}
 			if req.Subdomain != nil {
 				pool.Subdomain = *req.Subdomain

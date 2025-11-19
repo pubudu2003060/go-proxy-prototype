@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/pubudu2003060/go-proxy-prototype/captain/models"
 	"github.com/pubudu2003060/go-proxy-prototype/captain/storage"
+	"github.com/pubudu2003060/go-proxy-prototype/captain/utils"
 )
 
 func CreateUser(storage *storage.MemoryStorage) gin.HandlerFunc {
@@ -121,29 +123,55 @@ func DeleteUser(storage *storage.MemoryStorage) gin.HandlerFunc {
 	}
 }
 
-/*func Generate(storage *storage.MemoryStorage) gin.HandlerFunc {
+func Generate(storage *storage.MemoryStorage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var generateRequest models.GenerateRequest
 		if err := c.ShouldBindJSON(&generateRequest); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		}
 
-		countryStruct := storage.Country[generateRequest.Country]
-		var r *models.Region
+		country, ok := storage.Country[generateRequest.Country]
+		if !ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid country"})
+			return
+		}
 
-		for _,region := range storage.Region {
-			for _,country := range region.Countries {
-				if country.Code == countryStruct.Code {
-					r = region
+		var region *models.Region
+		var pool *models.Pool
+		foundRegion := false
+
+		for _, r := range storage.Region {
+			for _, c := range r.Countries {
+				if c.Code == country.Code {
+					region = r
+					foundRegion = true
+					break
 				}
+			}
+			if foundRegion {
+				break
 			}
 		}
 
-		for _,v := range r.Workers {
-
+		for _, p := range region.Pools {
+			if strings.Contains(p.Name, generateRequest.UpStream) {
+				pool = &p
+				break
+			}
 		}
 
-		s := generateRequest.UpStream+r.RName+"x.proxies.com:8081"
+		user, err := storage.GetUser(generateRequest.UserID)
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"messsge": "user not found"})
+			return
+		}
+
+		filters := utils.GetFilters(generateRequest.UpStream, country.Code, generateRequest.IsSticky)
+
+		s := pool.Subdomain + "proxies.com:" + strconv.Itoa(pool.Port) + user.Username + user.Password + filters
+
+		c.JSON(http.StatusOK, s)
 
 	}
-}*/
+
+}

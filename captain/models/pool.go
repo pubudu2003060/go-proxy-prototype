@@ -12,16 +12,15 @@ type Region struct {
 }
 
 type Worker struct {
-	Name      string
-	SubDomain string
+	Name       string
+	SubDomains []string
 }
 
 type Pool struct {
 	Name      string `json:"name"`
 	Region    string `json:"region"`
 	Subdomain string `json:"subdomain"`
-	PortStart int    `json:"port_start"`
-	PortEnd   int    `json:"port_end"`
+	Port      int    `json:"port"`
 	Outs      []Out  `json:"outs"`
 }
 
@@ -36,15 +35,13 @@ type CreatePoolRequest struct {
 	Name      string `json:"name" binding:"required"`
 	Region    string `json:"region" binding:"required"`
 	Subdomain string `json:"subdomain" binding:"required"`
-	PortStart int    `json:"port_start" binding:"required"`
-	PortEnd   int    `json:"port_end" binding:"required"`
+	Port      int    `json:"port" binding:"required"`
 	Outs      []Out  `json:"outs" binding:"required"`
 }
 
 type UpdatePoolRequest struct {
 	Region    *string `json:"region,omitempty" `
 	Subdomain *string `json:"subdomain,omitempty"`
-	PortStart *int    `json:"port_start,omitempty"`
-	PortEnd   *int    `json:"port_end,omitempty"`
+	Port      *int    `json:"port,omitempty"`
 	Outs      *[]Out  `json:"outs,omitempty"`
 }

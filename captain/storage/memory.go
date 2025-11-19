@@ -217,7 +217,7 @@ func (s *MemoryStorage) CreateRegion(region *models.Region) error {
 	}
 
 	s.Region[region.Name] = region
-	fmt.Printf("region created %v \n", s.Region[region.Name])
+	fmt.Printf("region created %v \n", s.Region[region.Name].Name)
 
 	return nil
 }
