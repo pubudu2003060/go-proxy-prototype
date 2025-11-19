@@ -39,7 +39,7 @@ func generateSessionNumberString() string {
 	number := rand.IntN(int(math.Pow10(numberLoopRound)))
 	var str string
 	for numberLoopRound >= 0 {
-		str += string(rand.IntN(122-97+1) + 97)
+		str += strconv.Itoa((rand.IntN(122-97+1) + 97))
 		numberLoopRound--
 	}
 
