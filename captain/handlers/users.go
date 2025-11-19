@@ -128,6 +128,7 @@ func Generate(storage *storage.MemoryStorage) gin.HandlerFunc {
 		var generateRequest models.GenerateRequest
 		if err := c.ShouldBindJSON(&generateRequest); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 
 		country, ok := storage.Country[generateRequest.Country]
@@ -139,6 +140,7 @@ func Generate(storage *storage.MemoryStorage) gin.HandlerFunc {
 		var region *models.Region
 		var pool *models.Pool
 		foundRegion := false
+		isPoolvalid := false
 
 		for _, r := range storage.Region {
 			for _, c := range r.Countries {
@@ -166,11 +168,25 @@ func Generate(storage *storage.MemoryStorage) gin.HandlerFunc {
 			return
 		}
 
+		for _, p := range user.AllowedPools {
+			if pool.Name == p {
+				isPoolvalid = true
+				break
+			}
+		}
+
+		if !isPoolvalid {
+			c.JSON(http.StatusNotFound, gin.H{"messsge": "user has no supported pools"})
+			return
+		}
+
 		filters := utils.GetFilters(generateRequest.UpStream, country.Code, generateRequest.IsSticky)
 
-		s := pool.Subdomain + "proxies.com:" + strconv.Itoa(pool.Port) + user.Username + user.Password + filters
+		s := pool.Subdomain + ".proxies.com:" + strconv.Itoa(pool.Port) + ":" + user.Username + ":" + user.Password + filters
 
-		c.JSON(http.StatusOK, s)
+		c.JSON(http.StatusOK, struct {
+			Proxy string `json:"proxy"`
+		}{Proxy: s})
 
 	}
 

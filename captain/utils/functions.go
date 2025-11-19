@@ -22,7 +22,7 @@ func GetFilters(upstream string, country string, isSticky bool) string {
 	case "iproyal":
 		filter = "-country-" + country
 		if isSticky {
-			filter += "_session-" + generateSessionNumberString() + "lifetime-1h"
+			filter += "_session-" + generateSessionNumberString() + "_lifetime-1h"
 		}
 	}
 
@@ -30,7 +30,7 @@ func GetFilters(upstream string, country string, isSticky bool) string {
 }
 
 func generateSessionNumber() int {
-	return rand.IntN(8999999) + 10000000
+	return rand.IntN(89999999) + 10000000
 }
 
 func generateSessionNumberString() string {
@@ -38,16 +38,13 @@ func generateSessionNumberString() string {
 	numberLoopRound := 8 - stringLoopRound
 	number := rand.IntN(int(math.Pow10(numberLoopRound)))
 	var str string
-	for numberLoopRound >= 0 {
-		str += strconv.Itoa((rand.IntN(122-97+1) + 97))
-		numberLoopRound--
+	for stringLoopRound >= 1 {
+		str += string((rand.IntN(122-97+1) + 97))
+		stringLoopRound--
 	}
-
 	runes := []rune(str + strconv.Itoa(number))
-
 	rand.Shuffle(len(runes), func(i, j int) {
 		runes[i], runes[j] = runes[j], runes[i]
 	})
-
 	return string(runes)
 }

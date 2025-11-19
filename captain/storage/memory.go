@@ -226,7 +226,7 @@ func (s *MemoryStorage) CreateCountry(country *models.Country) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if _, ok := s.Country[country.Name]; ok {
+	if _, ok := s.Country[country.Code]; ok {
 		return fmt.Errorf("cuntry with %s already Exit", country.Code)
 	}
 
