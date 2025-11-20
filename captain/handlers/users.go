@@ -189,5 +189,4 @@ func Generate(storage *storage.MemoryStorage) gin.HandlerFunc {
 		}{Proxy: s})
 
 	}
-
 }

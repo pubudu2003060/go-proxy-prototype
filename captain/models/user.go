@@ -54,5 +54,5 @@ type GenerateRequest struct {
 	UserID   string `json:"user_id" binding:"required"`
 	UpStream string `json:"upstream" binding:"required"`
 	Country  string `json:"country" binding:"required"`
-	IsSticky bool   `json:"issticky" binding:"required"`
+	IsSticky bool   `json:"issticky"`
 }

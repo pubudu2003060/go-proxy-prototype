@@ -39,7 +39,8 @@ func generateSessionNumberString() string {
 	number := rand.IntN(int(math.Pow10(numberLoopRound)))
 	var str string
 	for stringLoopRound >= 1 {
-		str += string((rand.IntN(122-97+1) + 97))
+		num := rune(rand.IntN(122-97+1) + 97)
+		str += string(num)
 		stringLoopRound--
 	}
 	runes := []rune(str + strconv.Itoa(number))
