@@ -20,12 +20,12 @@ import (
 func main() {
 	wg := sync.WaitGroup{}
 	wg.Add(2)
-	go startHTTPProxy()
-	go startSOCKSProxy()
+	go startHTTPProxy(&wg)
+	go startSOCKSProxy(&wg)
 	wg.Wait()
 }
 
-func startHTTPProxy() {
+func startHTTPProxy(wg *sync.WaitGroup) {
 	addr := ":8081"
 
 	configManager := config.NewConfigManager("http://localhost:8080")
@@ -45,8 +45,11 @@ func startHTTPProxy() {
 		WriteTimeout: 15 * time.Second,
 		IdleTimeout:  60 * time.Second,
 	}
-	log.Printf("proxy listening on %s", addr)
-	log.Fatal(srv.ListenAndServe())
+	log.Printf("HTTP/S proxy listening on %s", addr)
+	if err := srv.ListenAndServe(); err != nil {
+		wg.Done()
+		return
+	}
 }
 
 var PROXY_VERSION = byte(0x05)
@@ -54,9 +57,10 @@ var NO_AUTH = byte(0x00)
 
 const CMD_CONNECT = byte(0x01)
 
-func startSOCKSProxy() {
+func startSOCKSProxy(wg *sync.WaitGroup) {
 	listner, err := net.Listen("tcp", ":1080")
 	if err != nil {
+		wg.Done()
 		log.Fatalf("failed to listen :1080: %s", err)
 	}
 	defer listner.Close()
