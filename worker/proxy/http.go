@@ -39,7 +39,7 @@ func NewHTTPProxy(configManager *config.ConfigManager, authClient *auth.AuthClie
 func (p *HTTPProxy) HandleConnection(w http.ResponseWriter, r *http.Request) {
 	log.Printf("new request come:%v", r.Host)
 	proxyAuth := r.Header.Get("Proxy-Authorization")
-	authresp, err, filters := p.authenticateProxyHeader(proxyAuth)
+	authresp, filters, err := p.authenticateProxyHeader(proxyAuth)
 	if err != nil {
 		log.Printf("auth failed: %v", err)
 		p.send407(w)
@@ -241,13 +241,13 @@ func (p *HTTPProxy) selectUpstream(pool *models.Pool, filters string) *models.Ou
 	return selected
 }
 
-func (p *HTTPProxy) authenticateProxyHeader(header string) (*models.AuthResponse, error, string) {
+func (p *HTTPProxy) authenticateProxyHeader(header string) (*models.AuthResponse, string, error) {
 	if header == "" {
-		return nil, errors.New("missing proxy-authorization"), ""
+		return nil, "", errors.New("missing proxy-authorization")
 	}
 	parts := strings.SplitN(header, " ", 2)
 	if len(parts) != 2 {
-		return nil, errors.New("malformed proxy-authorization"), ""
+		return nil, "", errors.New("malformed proxy-authorization")
 	}
 	scheme := strings.ToLower(parts[0])
 	cred := strings.TrimSpace(parts[1])
@@ -256,23 +256,23 @@ func (p *HTTPProxy) authenticateProxyHeader(header string) (*models.AuthResponse
 	case "basic":
 		decoded, err := base64.StdEncoding.DecodeString(cred)
 		if err != nil {
-			return nil, fmt.Errorf("bad basic encoding: %w", err), ""
+			return nil, "", fmt.Errorf("bad basic encoding: %w", err)
 		}
 		up := string(decoded)
 		position := strings.IndexByte(up, ':')
 		filterPosition := strings.IndexByte(up, '-')
 		if position < 0 {
-			return nil, errors.New("basic credentials missing ':'"), ""
+			return nil, "", errors.New("basic credentials missing ':'")
 		}
 		username, password, cred := up[:position], up[position+1:filterPosition], up[filterPosition:]
 		authresp, err := p.authClient.Authenticate(username, password)
 		if err != nil {
 			log.Println("Error authenticate", err)
-			return nil, errors.New("invalid user/pass"), ""
+			return nil, "", errors.New("invalid user/pass")
 		}
-		return authresp, nil, cred
+		return authresp, cred, nil
 	default:
-		return nil, fmt.Errorf("unsupported auth scheme: %s", scheme), ""
+		return nil, "", fmt.Errorf("unsupported auth scheme: %s", scheme)
 	}
 }
 
